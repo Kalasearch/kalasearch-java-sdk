@@ -33,12 +33,12 @@ public class HttpClientFactory {
     /**
      * 最大连接数
      */
-    private static final int MAX_TOTAL_CONNECTIONS = 60000;
+    private static final int MAX_TOTAL_CONNECTIONS = 200;
 
     /**
      * 每个路由最大连接数
      */
-    private static final int MAX_PER_ROUTE_CONNECTIONS = 10;
+    private static final int MAX_PER_ROUTE_CONNECTIONS = 200;
 
     /**
      * 从连接池获取连接的超时时间 20s
