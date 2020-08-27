@@ -48,12 +48,12 @@ public class HttpClientFactory {
     /**
      * 建立连接的超时时间 20s
      */
-    private static final int CONNECT_TIMEOUT = 20000;
+    private static int CONNECT_TIMEOUT = 20000;
 
     /**
-     * socket数据传输过程中数据包之间间隔的最大超时时间 6s
+     * socket数据传输过程中数据包之间间隔的最大超时时间 60s
      */
-    private static final int SOCKET_TIMEOUT = 6000;
+    private static int SOCKET_TIMEOUT = 60000;
 
     /**
      * 空闲连接过期时间，重用空闲连接时会先检查判断是否空闲时间超过此时间，若超过此时间则释放此连接socket重建
@@ -71,10 +71,13 @@ public class HttpClientFactory {
             // 构建ssl上下文
             SSLContext sslContext = SSLContexts.createDefault();
             X509TrustManager x509TrustManager = new X509TrustManager() {
+                @Override
                 public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {}
 
+                @Override
                 public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {}
 
+                @Override
                 public X509Certificate[] getAcceptedIssuers() { return null; }
             };
             sslContext.init(null, new TrustManager[]{x509TrustManager}, null);
@@ -118,7 +121,7 @@ public class HttpClientFactory {
                     // 定期清理不可用过期连接
                     .evictExpiredConnections()
                     // 定期清理长时间的空闲可用连接
-                    .evictIdleConnections(24, TimeUnit.HOURS)
+                    .evictIdleConnections(1, TimeUnit.MINUTES)
                     .build();
 
         } catch (Exception e) {
@@ -132,5 +135,21 @@ public class HttpClientFactory {
      */
     public static CloseableHttpClient getHttpClient() {
         return httpClient;
+    }
+
+    public static int getConnectTimeout() {
+        return CONNECT_TIMEOUT;
+    }
+
+    public static void setConnectTimeout(int connectTimeout) {
+        CONNECT_TIMEOUT = connectTimeout;
+    }
+
+    public static int getSocketTimeout() {
+        return SOCKET_TIMEOUT;
+    }
+
+    public static void setSocketTimeout(int socketTimeout) {
+        SOCKET_TIMEOUT = socketTimeout;
     }
 }

@@ -1,16 +1,20 @@
 package com.kalasearch.client;
 
 import com.kalasearch.client.entity.Config;
+import com.kalasearch.client.entity.IndexInfo;
 import com.kalasearch.client.entity.QueryInfo;
 import com.kalasearch.client.entity.RespEntity;
-import com.kalasearch.client.http.HttpClient;
+import com.kalasearch.client.http.HttpClientUtil;
+
+import java.util.Optional;
 
 /**
  * kalasearch index
  * @author tomsun28
  * @date 2020-08-26 22:56
  */
-public class Index {
+@SuppressWarnings("unchecked")
+public class Index<T> {
 
     private final String indexId;
 
@@ -21,33 +25,33 @@ public class Index {
         this.config = config;
     }
 
-    public RespEntity getInfo() {
+    public Optional<IndexInfo> getInfo() {
         String path = String.format("indexes/%s/info", this.indexId);
-        return HttpClient.get(this.config, path, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.get(this.config, path, IndexInfo.class));
     }
 
-    public RespEntity addObject(Object document) {
+    public Optional<RespEntity<T>> addObject(T document) {
         String path = String.format("indexes/%s/objects", this.indexId);
-        return HttpClient.post(this.config, path, document, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.post(this.config, path, document, RespEntity.class));
     }
 
-    public RespEntity addObjects(Object document) {
+    public Optional<RespEntity<T>> addObjects(T[] documents) {
         String path = String.format("indexes/%s/objects/batch", this.indexId);
-        return HttpClient.post(this.config, path, document, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.post(this.config, path, documents, RespEntity.class));
     }
 
-    public RespEntity deleteObject(String objectId) {
+    public Optional<RespEntity<T>> deleteObject(String objectId) {
         String path = String.format("indexes/%s/objects/%s", this.indexId, objectId);
-        return HttpClient.delete(this.config, path, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.delete(this.config, path, RespEntity.class));
     }
 
-    public RespEntity updateObject(String objectId, Object document) {
+    public Optional<RespEntity<T>> updateObject(String objectId, Object document) {
         String path = String.format("indexes/%s/objects/%s", this.indexId, objectId);
-        return HttpClient.put(this.config, path, document, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.put(this.config, path, document, RespEntity.class));
     }
 
-    public RespEntity search(QueryInfo queryInfo) {
+    public Optional<RespEntity<T>> search(QueryInfo queryInfo) {
         String path = String.format("indexes/%s/query", this.indexId);
-        return HttpClient.post(this.config, path, queryInfo, RespEntity.class);
+        return Optional.ofNullable(HttpClientUtil.post(this.config, path, queryInfo, RespEntity.class));
     }
 }

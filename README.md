@@ -1,13 +1,12 @@
-# 卡拉搜索 - JAVA SDK (kalasearch-java-sdk) BETA  编码中...
-
-#### 编码中...
+# 卡拉搜索 - JAVA SDK (kalasearch-java-sdk)
 
 卡拉搜索提供托管的API服务，5分钟即可帮助你的App、小程序、网站接入极速智能的搜索功能
-- [卡拉搜索 - Java SDK (kalasearch-java-sdk)](#卡拉搜索---java-sdk-kalasearch-java-sdk)
+- [卡拉搜索 - Java SDK (kalasearch-java-sdk)](#卡拉搜索 - JAVA SDK (kalasearch-java-sdk))
   - [功能简介](#功能简介)
-  - [🎬开始使用](#开始使用)
-  - [💻常见操作](#常见操作)
+  - [🎬开始使用](#🎬开始使用)
+  - [💻常见操作](#💻常见操作)
   - [深入理解搜索引擎](#深入理解搜索引擎)
+  - [参与贡献](#参与贡献)  
   - [LICENSE](#license)
 ## 功能简介
 
@@ -35,13 +34,20 @@ KalasearchClient kalasearchClient = new KalasearchClient("YOUR AppId", "YOUR Api
 Index index = kalasearchClient.getIndex("your index");
 
 // 添加第一部电影
-Gson gson = new Gson();
-String document = gson.fromJson("{'name': '大话西游', 'actors': '周星驰/吴孟达', 'year':2000}", String.class);
-RespEntity indexResp = index.addObject(document);
+TestDocument testDocument = TestDocument.builder().name("大话西游").actors("周星驰/吴孟达").year("2000").build();
+Optional<RespEntity<TestDocument>> optional = index.addObject(testDocument);
+if (optional.isPresent()) {
+    RespEntity<TestDocument> indexResp = optional.get();
+}
 
 // 用关键词进行搜索
 QueryInfo queryInfo = QueryInfo.builder().query("孟达").build();
-RespEntity queryResp = index.search(queryInfo);
+Optional<RespEntity<TestDocument>> optional = index.search(queryInfo);
+if (optional.isPresent()) {
+    RespEntity<TestDocument> indexResp = optional.get();
+}
+
+// and more
 ```
 
 关于如何获得`AppId`, `ApiKey` 和 `indexId`，请参考[体验卡拉搜索](https://kalasearch.cn/docs/try-kalasearch)
@@ -58,9 +64,8 @@ RespEntity queryResp = index.search(queryInfo);
 
 
 ```
-Gson gson = new Gson();
-String document = gson.fromJson("{'name': '大话西游', 'actors': '周星驰/吴孟达', 'year':2000}", String.class);
-RespEntity indexResp = index.addObject(document);
+TestDocument testDocument = TestDocument.builder().name("大话西游").actors("周星驰/吴孟达").year("2000").build();
+Optional<RespEntity<TestDocument>> optional = index.addObject(testDocument);
 ```
 
 返回值: 
@@ -84,6 +89,9 @@ RespEntity queryResp = index.search(queryInfo);
 ## 深入理解搜索引擎
 如果你对搜索技术感兴趣，或者单纯希望为用户搭建一个体验更好的搜索系统，请关注卡拉搜索的技术博客[http://kalasearch.cn/blog](http://kalasearch.cn/blog)。
 
+## 参与贡献
+
+用idea导入项目,工程使用maven构建,需要安装lombok插件
 
 ## LICENSE
 

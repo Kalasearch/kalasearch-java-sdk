@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RespEntity {
+public class RespEntity<T> {
 
     private String id;
 
@@ -29,8 +29,17 @@ public class RespEntity {
 
     private Integer totalHits;
 
-    private Object[] hits;
+    private Search[] hits;
 
     private Integer queryTimeUsed;
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private class Search {
+
+        private String id;
+
+        private T source;
+    }
 }
