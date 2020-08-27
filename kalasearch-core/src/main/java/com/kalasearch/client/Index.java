@@ -1,10 +1,12 @@
 package com.kalasearch.client;
 
 import com.kalasearch.client.entity.Config;
+import com.kalasearch.client.entity.QueryInfo;
 import com.kalasearch.client.entity.RespEntity;
 import com.kalasearch.client.http.HttpClient;
 
 /**
+ * kalasearch index
  * @author tomsun28
  * @date 2020-08-26 22:56
  */
@@ -44,6 +46,8 @@ public class Index {
         return HttpClient.put(this.config, path, document, RespEntity.class);
     }
 
-    // todo search
-
+    public RespEntity search(QueryInfo queryInfo) {
+        String path = String.format("indexes/%s/query", this.indexId);
+        return HttpClient.post(this.config, path, queryInfo, RespEntity.class);
+    }
 }

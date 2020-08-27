@@ -33,7 +33,7 @@ public class HttpClient {
             httpGet.addHeader("X-Kalasearch-Key", config.getAppKey());
             httpGet.addHeader("Content-Type", "application/json");
             HttpResponse response = client.execute(httpGet);
-            if (isValidateResponseCode(response.getStatusLine().getStatusCode())) {
+            if (isInvalidResponseCode(response.getStatusLine().getStatusCode())) {
                 return null;
             }
             String result = EntityUtils.toString(response.getEntity());
@@ -63,7 +63,7 @@ public class HttpClient {
             entity.setContentType("text/json");
             httpPost.setEntity(entity);
             HttpResponse response = client.execute(httpPost);
-            if (isValidateResponseCode(response.getStatusLine().getStatusCode())) {
+            if (isInvalidResponseCode(response.getStatusLine().getStatusCode())) {
                 return null;
             }
             String result = EntityUtils.toString(response.getEntity());
@@ -92,7 +92,7 @@ public class HttpClient {
             entity.setContentType("text/json");
             httpPut.setEntity(entity);
             HttpResponse response = client.execute(httpPut);
-            if (isValidateResponseCode(response.getStatusLine().getStatusCode())) {
+            if (isInvalidResponseCode(response.getStatusLine().getStatusCode())) {
                 return null;
             }
             String result = EntityUtils.toString(response.getEntity());
@@ -116,7 +116,7 @@ public class HttpClient {
             httpDelete.addHeader("X-Kalasearch-Key", config.getAppKey());
             httpDelete.addHeader("Content-Type", "application/json");
             HttpResponse response = client.execute(httpDelete);
-            if (isValidateResponseCode(response.getStatusLine().getStatusCode())) {
+            if (isInvalidResponseCode(response.getStatusLine().getStatusCode())) {
                 return null;
             }
             String result = EntityUtils.toString(response.getEntity());
@@ -133,15 +133,18 @@ public class HttpClient {
         return null;
     }
 
-    private static boolean isValidateResponseCode(int statusCode) {
+    private static boolean isInvalidResponseCode(int statusCode) {
         if (statusCode == HttpStatus.SC_BAD_REQUEST) {
-            log.error("body格式不正确，请用 json检查器 检查格式");
+            log.error("bad request, maybe the body format is incorrect, please check the format with json checker");
             return true;
         } else if (statusCode == HttpStatus.SC_NOT_FOUND) {
-            log.error("索引不存在，请检查indexId参数");
+            log.error("maybe the index does not exist, please check");
+            return true;
+        } else if (statusCode == HttpStatus.SC_CONFLICT) {
+            log.error("type conflict, the index not allow several type document");
             return true;
         }
-        // todo
+        // todo other statusCode
         return false;
     }
 

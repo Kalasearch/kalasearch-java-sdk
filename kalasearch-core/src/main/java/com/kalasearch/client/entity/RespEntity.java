@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 /**
+ * entity for resp body
  * @author tomsun28
  * @date 2020-08-26 23:54
  */
@@ -25,5 +26,11 @@ public class RespEntity {
     private String hasErrors;
 
     private Object results;
+
+    private Integer totalHits;
+
+    private Object[] hits;
+
+    private Integer queryTimeUsed;
 
 }
