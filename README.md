@@ -1,5 +1,7 @@
 # 卡拉搜索 - JAVA SDK (kalasearch-java-sdk)
 
+**beta**   
+
 卡拉搜索提供托管的API服务，5分钟即可帮助你的App、小程序、网站接入极速智能的搜索功能
 - [卡拉搜索 - Java SDK (kalasearch-java-sdk)](#卡拉搜索 - JAVA SDK (kalasearch-java-sdk))
   - [功能简介](#功能简介)
